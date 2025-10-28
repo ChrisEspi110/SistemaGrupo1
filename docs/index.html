@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Grupo 1</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="login-background">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Grupo 1</h1>
+                <p>Accede con tu usuario y contraseña</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="usuario" name="usuario" placeholder="Usuario" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="clave" name="clave" placeholder="Contraseña" required>
+                </div>
+
+                <button type="submit">Iniciar Sesión</button>
+                <p id="mensajeError" class="mensaje-error"></p>
+            </form>
+
+            <p class="footer-text">¿Olvidaste tu contraseña? <a href="#">Recuperar</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

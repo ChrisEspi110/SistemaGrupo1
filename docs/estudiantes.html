@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"> <!-- Codificación de caracteres -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Página responsiva -->
+  <title>CRUD Estudiantes</title>
+  <link rel="stylesheet" href="estudiantes.css"> <!-- Estilos externos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería para gráficos -->
+</head>
+
+<body>
+  <!-- CABECERA -->
+  <div class="header">
+    <h2>Gestión de Estudiantes</h2>
+    <div class="header-buttons">
+      <button id="reportesBtn">📊 Ver Reportes</button> <!-- Muestra sección de reportes -->
+      <button id="logoutBtn">Cerrar Sesión</button> <!-- Acción de cerrar sesión -->
+    </div>
+  </div>
+
+  <!-- MENSAJES -->
+  <div id="mensaje" class="success"></div> <!-- Mensajes de éxito o error -->
+
+  <!-- FORMULARIO DE ESTUDIANTES -->
+  <div class="form-container">
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="text" id="apellido" placeholder="Apellido">
+    <input type="number" id="edad" placeholder="Edad">
+    <input type="text" id="curso" placeholder="Curso">
+    <button id="agregarBtn">Agregar Estudiante</button> <!-- Agregar o actualizar -->
+    <button id="cancelarEdicion" style="display:none;">Cancelar Edición</button> <!-- Cancelar edición -->
+  </div>
+
+  <!-- TABLA DE ESTUDIANTES -->
+  <section id="crudSection">
+    <table id="estudiantesTable">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Edad</th>
+          <th>Curso</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody> <!-- Contenido generado dinámicamente -->
+    </table>
+  </section>
+
+  <!-- SECCIÓN DE REPORTES -->
+  <section id="reportesSection" style="display:none;">
+    <div class="reportes-header">
+      <h3>📈 Reportes Dinámicos</h3>
+      <button id="cerrarReportesBtn">Volver al CRUD</button> <!-- Regresa al CRUD -->
+    </div>
+
+    <div class="graficos-container">
+      <!-- Gráfico: estudiantes por curso -->
+      <div class="grafico">
+        <h4>Cantidad de Estudiantes por Curso</h4>
+        <canvas id="graficoCursos"></canvas>
+      </div>
+
+      <!-- Gráfico: distribución de edades -->
+      <div class="grafico">
+        <h4>Distribución de Edades</h4>
+        <canvas id="graficoEdades"></canvas>
+      </div>
+
+      <!-- Gráfico: promedio de edad por curso -->
+      <div class="grafico">
+        <h4>Promedio de Edad por Curso</h4>
+        <canvas id="graficoPromedio"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <script src="estudiantes.js"></script> <!-- Lógica del CRUD y gráficos -->
+</body>
+</html>
