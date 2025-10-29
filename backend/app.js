@@ -6,7 +6,9 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('../frontend'));
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../frontend')));
+
 
 
 app.post('/login', async (req, res) => {
