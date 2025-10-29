@@ -20,7 +20,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 
 async function cargarEstudiantes() {
     try {
-        const res = await fetch('/estudiantes');
+        const res = await fetch('https://backend-ng4h.onrender.com/estudiantes'); // URL completa
         const estudiantes = await res.json();
         tablaBody.innerHTML = '';
 
@@ -204,7 +204,7 @@ document.getElementById('cerrarReportesBtn').addEventListener('click', () => {
 
 async function generarReportes() {
     try {
-        const res = await fetch('/estudiantes');
+        const res = await fetch('https://backend-ng4h.onrender.com/estudiantes'); // URL completa
         const estudiantes = await res.json();
 
     

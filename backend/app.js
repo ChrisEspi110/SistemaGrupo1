@@ -1,11 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const pool = require('./db'); 
-
+const cors = require('cors');
 
 const app = express();
 
-app.use(cors({ origin: '*' })); 
+app.use(cors({ origin: '*' })); // Permite cualquier dominio
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -109,9 +109,20 @@ function generarCodigo(nombre, apellido) {
 }
 
 
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor Iniciado por el Grupo1 en http://localhost:${PORT}`);
+const PORT = process.env.PORT || 3000;
+
+// Endpoint temporal para probar la DB
+app.get('/test-db', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT NOW()'); // consulta simple para probar conexión
+        res.json({ success: true, server_time: result.rows[0] });
+    } catch (err) {
+        console.error('❌ Error al conectar a la DB:', err);
+        res.status(500).json({ success: false, error: err.message });
+    }
 });
 
 
+app.listen(PORT, () => {
+    console.log(`Servidor Iniciado por el Grupo1 en el puerto ${PORT}`);
+});

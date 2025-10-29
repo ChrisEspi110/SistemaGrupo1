@@ -8,7 +8,7 @@ form.addEventListener('submit', async e => {
     const clave = document.getElementById('clave').value;
 
     try {
-        const res = await fetch('/login', {
+        const res = await fetch('https://backend-ng4h.onrender.com/login', { // <-- URL completa del backend
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({usuario, clave})
