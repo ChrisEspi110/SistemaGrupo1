@@ -1,12 +1,9 @@
-// ===== SELECTORES PRINCIPALES =====
-const tablaBody = document.querySelector('#estudiantesTable tbody'); // Cuerpo de la tabla
-const mensaje = document.getElementById('mensaje'); // Contenedor de mensajes
 
-let editandoId = null; // ID del estudiante en edición
+const tablaBody = document.querySelector('#estudiantesTable tbody'); 
+const mensaje = document.getElementById('mensaje'); 
 
-// ===== FUNCIONES GENERALES =====
+let editandoId = null; 
 
-// Mostrar mensaje dinámico (éxito o error)
 function mostrarMensaje(texto, tipo = 'success') {
     mensaje.textContent = texto;
     mensaje.className = tipo === 'success' ? 'success' : 'error';
@@ -14,14 +11,13 @@ function mostrarMensaje(texto, tipo = 'success') {
     setTimeout(() => mensaje.style.display = 'none', 3000);
 }
 
-// ===== SESIÓN =====
-// Cerrar sesión y redirigir a login
+
 document.getElementById('logoutBtn').addEventListener('click', () => {
     localStorage.removeItem('usuario');
     window.location.href = 'index.html';
 });
 
-// ===== CARGAR ESTUDIANTES =====
+
 async function cargarEstudiantes() {
     try {
         const res = await fetch('/estudiantes');
@@ -43,17 +39,17 @@ async function cargarEstudiantes() {
             `;
             tablaBody.appendChild(tr);
 
-            // ===== BOTÓN EDITAR =====
+          
             const btnEditar = tr.querySelector('.editar');
             btnEditar.addEventListener('click', () => {
                 if (btnEditar.textContent === 'Editar') {
-                    // Guardar valores actuales
+              
                     const nombre = tr.querySelector('.nombre').textContent;
                     const apellido = tr.querySelector('.apellido').textContent;
                     const edad = tr.querySelector('.edad').textContent;
                     const curso = tr.querySelector('.curso').textContent;
 
-                    // Reemplazar celdas por inputs para edición
+                  
                     tr.querySelector('.nombre').innerHTML = `<input type="text" value="${nombre}">`;
                     tr.querySelector('.apellido').innerHTML = `<input type="text" value="${apellido}">`;
                     tr.querySelector('.edad').innerHTML = `<input type="number" value="${edad}">`;
@@ -61,7 +57,7 @@ async function cargarEstudiantes() {
 
                     btnEditar.textContent = 'Guardar';
 
-                    // Botón cancelar inline
+                   
                     const btnCancelar = document.createElement('button');
                     btnCancelar.textContent = 'Cancelar';
                     btnCancelar.classList.add('cancelar');
@@ -78,7 +74,7 @@ async function cargarEstudiantes() {
                     });
 
                 } else {
-                    // Guardar cambios en el servidor
+                 
                     const nombre = tr.querySelector('.nombre input').value.trim();
                     const apellido = tr.querySelector('.apellido input').value.trim();
                     const edad = parseInt(tr.querySelector('.edad input').value);
@@ -110,7 +106,7 @@ async function cargarEstudiantes() {
                 }
             });
 
-            // ===== BOTÓN ELIMINAR =====
+          
             const btnEliminar = tr.querySelector('.eliminar');
             btnEliminar.addEventListener('click', async () => {
                 if (!confirm('¿Seguro que quieres eliminar este estudiante?')) return;
@@ -131,7 +127,7 @@ async function cargarEstudiantes() {
     }
 }
 
-// ===== AGREGAR / ACTUALIZAR ESTUDIANTE =====
+
 document.getElementById('agregarBtn').addEventListener('click', async () => {
     const nombre = document.getElementById('nombre').value.trim();
     const apellido = document.getElementById('apellido').value.trim();
@@ -154,7 +150,7 @@ document.getElementById('agregarBtn').addEventListener('click', async () => {
         if (data.success) {
             mostrarMensaje(editandoId ? 'Estudiante actualizado' : 'Estudiante agregado', 'success');
             cargarEstudiantes();
-            // Limpiar formulario
+         
             document.getElementById('nombre').value = '';
             document.getElementById('apellido').value = '';
             document.getElementById('edad').value = '';
@@ -171,7 +167,7 @@ document.getElementById('agregarBtn').addEventListener('click', async () => {
     }
 });
 
-// ===== CANCELAR EDICIÓN =====
+
 document.getElementById('cancelarEdicion').addEventListener('click', () => {
     editandoId = null;
     document.getElementById('nombre').value = '';
@@ -182,22 +178,22 @@ document.getElementById('cancelarEdicion').addEventListener('click', () => {
     document.getElementById('cancelarEdicion').style.display = 'none';
 });
 
-// ===== INICIALIZACIÓN =====
-cargarEstudiantes(); // Carga inicial de estudiantes
 
-// ===== REPORTES =====
+cargarEstudiantes(); 
+
+
 let chartCursos = null, chartEdades = null, chartPromedio = null;
 
-// Mostrar sección de reportes
+
 document.getElementById('reportesBtn').addEventListener('click', async () => {
     document.getElementById('crudSection').style.display = 'none';
     document.querySelector('.form-container').style.display = 'none';
     document.getElementById('reportesSection').style.display = 'block';
     document.getElementById('reportesBtn').style.display = 'none';
-    await generarReportes(); // Genera gráficos
+    await generarReportes(); 
 });
 
-// Cerrar reportes y volver al CRUD
+
 document.getElementById('cerrarReportesBtn').addEventListener('click', () => {
     document.getElementById('reportesSection').style.display = 'none';
     document.getElementById('crudSection').style.display = 'block';
@@ -205,13 +201,13 @@ document.getElementById('cerrarReportesBtn').addEventListener('click', () => {
     document.getElementById('reportesBtn').style.display = 'inline-block';
 });
 
-// Generar reportes dinámicos
+
 async function generarReportes() {
     try {
         const res = await fetch('/estudiantes');
         const estudiantes = await res.json();
 
-        // ===== ESTUDIANTES POR CURSO =====
+    
         const cursos = {};
         estudiantes.forEach(e => cursos[e.curso] = (cursos[e.curso] || 0) + 1);
 
@@ -222,7 +218,7 @@ async function generarReportes() {
             options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
         });
 
-        // ===== DISTRIBUCIÓN DE EDADES =====
+    
         const edades = {};
         estudiantes.forEach(e => edades[e.edad] = (edades[e.edad] || 0) + 1);
 
@@ -233,7 +229,6 @@ async function generarReportes() {
             options: { responsive: true }
         });
 
-        // ===== PROMEDIO DE EDAD POR CURSO =====
         const promedio = {};
         estudiantes.forEach(e => {
             if (!promedio[e.curso]) promedio[e.curso] = { total: 0, count: 0 };

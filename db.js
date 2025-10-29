@@ -1,24 +1,24 @@
-const sql = require('mssql');
+const { Pool } = require('pg');
 
-const config = {
-  user: 'FitiKey',
-  password: '1234',
-  server: 'CHRISPY',
-  database: 'EscuelaDB',
-  port: 1433,               
-  options: {
-    encrypt: false,
-    trustServerCertificate: true
-  }
-};
+const pool = new Pool({
+    host: 'dpg-d40k64er433s738f89t0-a.oregon-postgres.render.com',
+    port: 5432,
+    database: 'escuela_db_a271',
+    user: 'escuela_db_a271_user',
+    password: 'xjupPIVN19GTTw8z4dLpxH9NzRS2EV1v',
+    ssl: {
+        rejectUnauthorized: false   
+    }
+});
 
 
-const poolPromise = new sql.ConnectionPool(config)
-  .connect()
-  .then(pool => {
-    console.log('✅ Conectado a SQL Server');
-    return pool;
-  })
-  .catch(err => console.log('Error al conectarse:', err));
+pool.connect()
+    .then(client => {
+        console.log('Conectado');
+        client.release();
+    })
+    .catch(err => {
+        console.error('Error al conectar', err);
+    });
 
-module.exports = { sql, poolPromise };
+module.exports = pool;
