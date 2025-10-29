@@ -1,6 +1,7 @@
 
 const tablaBody = document.querySelector('#estudiantesTable tbody'); 
 const mensaje = document.getElementById('mensaje'); 
+const BACKEND_URL = 'https://backend-ng4h.onrender.com';
 
 let editandoId = null; 
 
@@ -85,11 +86,12 @@ async function cargarEstudiantes() {
                         return;
                     }
 
-                    fetch(`/estudiantes/${est.id}`, {
+                    fetch(`${BACKEND_URL}/estudiantes/${est.id}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ nombre, apellido, edad, curso })
                     })
+
                         .then(res => res.json())
                         .then(data => {
                             if (data.success) {
@@ -140,12 +142,12 @@ document.getElementById('agregarBtn').addEventListener('click', async () => {
     }
 
     try {
-        const url = editandoId ? `/estudiantes/${editandoId}` : '/estudiantes';
-        const method = editandoId ? 'PUT' : 'POST';
-        const body = JSON.stringify({ nombre, apellido, edad, curso });
+const url = editandoId ? `${BACKEND_URL}/estudiantes/${editandoId}` : `${BACKEND_URL}/estudiantes`;
+const method = editandoId ? 'PUT' : 'POST';
+const body = JSON.stringify({ nombre, apellido, edad, curso });
 
-        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
-        const data = await res.json();
+const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
+const data = await res.json();
 
         if (data.success) {
             mostrarMensaje(editandoId ? 'Estudiante actualizado' : 'Estudiante agregado', 'success');
