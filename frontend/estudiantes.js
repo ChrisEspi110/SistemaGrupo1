@@ -1,4 +1,3 @@
-
 const tablaBody = document.querySelector('#estudiantesTable tbody'); 
 const mensaje = document.getElementById('mensaje'); 
 const BACKEND_URL = 'https://backend-ng4h.onrender.com';
@@ -12,16 +11,14 @@ function mostrarMensaje(texto, tipo = 'success') {
     setTimeout(() => mensaje.style.display = 'none', 3000);
 }
 
-
 document.getElementById('logoutBtn').addEventListener('click', () => {
     localStorage.removeItem('usuario');
     window.location.href = 'index.html';
 });
 
-
 async function cargarEstudiantes() {
     try {
-        const res = await fetch('https://backend-ng4h.onrender.com/estudiantes'); // URL completa
+        const res = await fetch(`${BACKEND_URL}/estudiantes`);
         const estudiantes = await res.json();
         tablaBody.innerHTML = '';
 
@@ -40,17 +37,14 @@ async function cargarEstudiantes() {
             `;
             tablaBody.appendChild(tr);
 
-          
             const btnEditar = tr.querySelector('.editar');
             btnEditar.addEventListener('click', () => {
                 if (btnEditar.textContent === 'Editar') {
-              
                     const nombre = tr.querySelector('.nombre').textContent;
                     const apellido = tr.querySelector('.apellido').textContent;
                     const edad = tr.querySelector('.edad').textContent;
                     const curso = tr.querySelector('.curso').textContent;
 
-                  
                     tr.querySelector('.nombre').innerHTML = `<input type="text" value="${nombre}">`;
                     tr.querySelector('.apellido').innerHTML = `<input type="text" value="${apellido}">`;
                     tr.querySelector('.edad').innerHTML = `<input type="number" value="${edad}">`;
@@ -58,7 +52,6 @@ async function cargarEstudiantes() {
 
                     btnEditar.textContent = 'Guardar';
 
-                   
                     const btnCancelar = document.createElement('button');
                     btnCancelar.textContent = 'Cancelar';
                     btnCancelar.classList.add('cancelar');
@@ -75,7 +68,6 @@ async function cargarEstudiantes() {
                     });
 
                 } else {
-                 
                     const nombre = tr.querySelector('.nombre input').value.trim();
                     const apellido = tr.querySelector('.apellido input').value.trim();
                     const edad = parseInt(tr.querySelector('.edad input').value);
@@ -91,29 +83,27 @@ async function cargarEstudiantes() {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ nombre, apellido, edad, curso })
                     })
-
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                mostrarMensaje('Estudiante actualizado', 'success');
-                                cargarEstudiantes();
-                            } else {
-                                mostrarMensaje('Error al actualizar', 'error');
-                            }
-                        })
-                        .catch(err => {
-                            mostrarMensaje('Error de conexión', 'error');
-                            console.error(err);
-                        });
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            mostrarMensaje('Estudiante actualizado', 'success');
+                            cargarEstudiantes();
+                        } else {
+                            mostrarMensaje('Error al actualizar', 'error');
+                        }
+                    })
+                    .catch(err => {
+                        mostrarMensaje('Error de conexión', 'error');
+                        console.error(err);
+                    });
                 }
             });
 
-          
             const btnEliminar = tr.querySelector('.eliminar');
             btnEliminar.addEventListener('click', async () => {
                 if (!confirm('¿Seguro que quieres eliminar este estudiante?')) return;
                 try {
-                    const res = await fetch(`/estudiantes/${est.id}`, { method: 'DELETE' });
+                    const res = await fetch(`${BACKEND_URL}/estudiantes/${est.id}`, { method: 'DELETE' });
                     const data = await res.json();
                     mostrarMensaje(data.success ? 'Estudiante eliminado' : 'Error eliminando', data.success ? 'success' : 'error');
                     cargarEstudiantes();
@@ -129,7 +119,6 @@ async function cargarEstudiantes() {
     }
 }
 
-
 document.getElementById('agregarBtn').addEventListener('click', async () => {
     const nombre = document.getElementById('nombre').value.trim();
     const apellido = document.getElementById('apellido').value.trim();
@@ -142,17 +131,17 @@ document.getElementById('agregarBtn').addEventListener('click', async () => {
     }
 
     try {
-const url = editandoId ? `${BACKEND_URL}/estudiantes/${editandoId}` : `${BACKEND_URL}/estudiantes`;
-const method = editandoId ? 'PUT' : 'POST';
-const body = JSON.stringify({ nombre, apellido, edad, curso });
+        const url = editandoId ? `${BACKEND_URL}/estudiantes/${editandoId}` : `${BACKEND_URL}/estudiantes`;
+        const method = editandoId ? 'PUT' : 'POST';
+        const body = JSON.stringify({ nombre, apellido, edad, curso });
 
-const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
-const data = await res.json();
+        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
+        const data = await res.json();
 
         if (data.success) {
             mostrarMensaje(editandoId ? 'Estudiante actualizado' : 'Estudiante agregado', 'success');
             cargarEstudiantes();
-         
+
             document.getElementById('nombre').value = '';
             document.getElementById('apellido').value = '';
             document.getElementById('edad').value = '';
@@ -169,7 +158,6 @@ const data = await res.json();
     }
 });
 
-
 document.getElementById('cancelarEdicion').addEventListener('click', () => {
     editandoId = null;
     document.getElementById('nombre').value = '';
@@ -180,12 +168,9 @@ document.getElementById('cancelarEdicion').addEventListener('click', () => {
     document.getElementById('cancelarEdicion').style.display = 'none';
 });
 
-
-cargarEstudiantes(); 
-
+cargarEstudiantes();
 
 let chartCursos = null, chartEdades = null, chartPromedio = null;
-
 
 document.getElementById('reportesBtn').addEventListener('click', async () => {
     document.getElementById('crudSection').style.display = 'none';
@@ -195,7 +180,6 @@ document.getElementById('reportesBtn').addEventListener('click', async () => {
     await generarReportes(); 
 });
 
-
 document.getElementById('cerrarReportesBtn').addEventListener('click', () => {
     document.getElementById('reportesSection').style.display = 'none';
     document.getElementById('crudSection').style.display = 'block';
@@ -203,13 +187,11 @@ document.getElementById('cerrarReportesBtn').addEventListener('click', () => {
     document.getElementById('reportesBtn').style.display = 'inline-block';
 });
 
-
 async function generarReportes() {
     try {
-        const res = await fetch('https://backend-ng4h.onrender.com/estudiantes'); // URL completa
+        const res = await fetch(`${BACKEND_URL}/estudiantes`);
         const estudiantes = await res.json();
 
-    
         const cursos = {};
         estudiantes.forEach(e => cursos[e.curso] = (cursos[e.curso] || 0) + 1);
 
@@ -220,7 +202,6 @@ async function generarReportes() {
             options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
         });
 
-    
         const edades = {};
         estudiantes.forEach(e => edades[e.edad] = (edades[e.edad] || 0) + 1);
 
