@@ -16,12 +16,13 @@ form.addEventListener('submit', async e => {
 
         const data = await res.json();
 
-        if(data.success){
-            window.location.href = 'estudiantes.html';
-        } else {
-            mensajeError.textContent = 'Usuario o contraseña incorrectos';
-            mensajeError.style.display = 'block';
-        }
+if(data.success){
+    window.location.href = 'https://chrisespi110.github.io/SistemaGrupo1/estudiantes.html';
+} else {
+    mensajeError.textContent = 'Usuario o contraseña incorrectos';
+    mensajeError.style.display = 'block';
+}
+
     } catch (err) {
         mensajeError.textContent = 'Error de conexión. Intenta nuevamente.';
         mensajeError.style.display = 'block';
