@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const pool = require('./db'); 
-
+const cors = require('cors');
+//si si
 const app = express();
+
+app.use(cors({ origin: '*' })); 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
